@@ -1,0 +1,345 @@
+/* @override http://adyen.local/adyen_community_1_6_2_0/skin/frontend/base/default/css/adyenstyle.css */
+
+/**
+ * Adyen Payment Module
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category	Adyen
+ * @package	Adyen_Payment
+ * @copyright	Copyright (c) 2011 Adyen (http://www.adyen.com)
+ * @license	http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @category   Payment Gateway
+ * @package    Adyen_Payment
+ * @author     Adyen
+ * @property   Adyen B.V
+ * @copyright  Copyright (c) 2014 Adyen BV (http://www.adyen.com)
+ */
+
+/* Adyen Customs */
+
+/* Checkout Page */
+#co-payment-form .sp-methods dt img {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.adyen-payment-method-icon {
+    margin-right: 6px;
+    margin-left: 2px;
+    border: none !important;
+    width: 66px;
+    height: 43px;
+}
+
+.adyen-payment-method-icon.adyen_cc,
+.adyen-payment-method-icon.adyen_hpp,
+.adyen-payment-method-icon.adyen_boleto,
+.adyen-payment-method-icon.adyen_openinvoice_afterpay_default,
+.adyen-payment-method-icon.adyen_openinvoice_klarna,
+.adyen-payment-method-icon.adyen_pos_cloud,
+.adyen-payment-method-icon.adyen_sepa,
+.adyen-payment-method-icon.adyen_ideal,
+.adyen-payment-method-icon.adyen_multibanco,
+.adyen-payment-method-icon .no-mc {
+    background: url(../images/adyen/pm_gloss.png) left top no-repeat;
+}
+
+.adyen-payment-method-icon.adyen_cc {
+    background-position: 0 -272px;
+}
+
+.adyen-payment-method-icon.adyen_hpp {
+    background-position: 0 -272px;
+}
+
+.adyen-payment-method-icon.adyen_boleto {
+    background-position: 0 -2092px;
+}
+
+.adyen-payment-method-icon.adyen_openinvoice_afterpay_default {
+    background-position: 0 -1637px;
+}
+
+.adyen-payment-method-icon.adyen_openinvoice_klarna {
+    background-position: 0 -1728px;
+}
+
+.adyen-payment-method-icon.adyen_pos_cloud {
+    background-position: 0 -1818px;
+}
+
+.adyen-payment-method-icon.adyen_sepa {
+    background-position: 0 -1910px;
+}
+
+.adyen-payment-method-icon.adyen_ideal {
+    background-position: 0 -636px;
+}
+
+.adyen-payment-method-icon.adyen_multibanco {
+    background-position: 0 -2183px;
+}
+
+.adyen-payment-method-icon .no-mc {
+    background-position: left top;
+}
+
+/* Credit Cards */
+.sp-methods .form-list li.adyen_payment_creditcard_labels {
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.sp-methods .form-list li.adyen_payment_creditcard_labels img {
+    display: block;
+    float: left;
+    margin-right: 10px;
+}
+
+.adyen_payment_creditcard_labels img.grey {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+}
+
+.sp-methods .adyen_payment_input_fields {
+    clear: both;
+}
+
+/* Checkout */
+.sp-methods #payment_form_adyen_hpp li {
+    margin: 0;
+}
+
+.sp-methods #payment_form_adyen_hpp {
+}
+
+.sp-methods #payment_form_adyen_hpp .input-box table {
+    margin-bottom: 5px;
+}
+
+.sp-methods #payment_form_adyen_hpp .input-box table td {
+    vertical-align: middle;
+}
+
+.adyen-ideal-image-label {
+    display: block;
+}
+
+.adyen-ideal-image-label img {
+    display: inline;
+    vertical-align: middle;
+}
+
+/* for onepagecheckout */
+.payment-methods dd#container_payment_method_adyen_hpp {
+    margin: 0;
+    padding: 0;
+}
+
+/* end for onepagecheckout */
+
+.sp-methods h3.other-payment {
+    margin-top: 15px;
+}
+
+.sp-methods #oneclick_payment_form_adyen_oneclick {
+    padding-top: 10px;
+}
+
+.sp-methods #oneclick_payment_form_adyen_oneclick .recurring-creditcards .recurring_type {
+    float: left;
+    vertical-align: middle;
+    height: 120px;
+}
+
+#payment_form_adyen_ideal label img {
+    float: none;
+}
+
+.saved-cards ul li {
+    margin-bottom: 10px;
+}
+
+.saved-cards .btn-delete {
+    margin-top: 10px;
+}
+
+.sp-methods #oneclick_payment_form_adyen_oneclick .creditcard-block,
+.saved-cards .creditcard-block {
+    display: inline-block;
+    border: 1px solid #999;
+    padding: 10px;
+    margin-left: 10px;
+    min-width: 568px;
+    vertical-align: middle;
+}
+
+.saved-cards .creditcard-block {
+    min-width: 350px;
+}
+
+.sp-methods #oneclick_payment_form_adyen_oneclick .creditcard-block img,
+.saved-cards .creditcard-block img {
+    margin-bottom: 10px;
+}
+
+.sp-methods #oneclick_payment_form_adyen_oneclick .creditcard-block .columns,
+.saved-cards .creditcard-block .columns {
+    float: left;
+    margin-right: 10px;
+    height: 30px;
+}
+
+.sp-methods .adyen_oneclick .columns .update-expiration-date,
+.saved-cards .creditcard-block .creditcard-block .columns .update-expiration-date {
+    display: inline;
+    float: none;
+    margin: 0;
+}
+
+.sp-methods .adyen_oneclick .columns label,
+.saved-cards .creditcard-block label {
+    display: block;
+}
+
+.sp-methods .adyen_oneclick .columns .columns.three.b label,
+.creditcard-holder-name, .saved-cards .creditcard-block .columns.three.b label {
+    width: 175px;
+}
+
+.sp-methods .adyen_oneclick .columns .creditcard-holder-name,
+.saved-cards .creditcard-block .creditcard-holder-name {
+    margin-top: 20px;
+}
+
+.sp-methods .adyen_oneclick .columns .adyen-oneclick-installments,
+.saved-cards .creditcard-block .adyen-oneclick-installments {
+    margin-top: 10px;
+}
+
+/* pos redirect page */
+.redirect-body-adyen {
+    margin: 0;
+    padding: 0;
+}
+
+/* Add your custom CSS styling here */
+
+/* Input field CSS styling */
+.payment-div {
+    margin: 0 auto;
+    width: 60%;
+}
+
+.input-container {
+    margin-top: 8px;
+    width: 100%;
+    overflow: hidden;
+    clear: both;
+}
+
+.input-field {
+    border: 1px solid #dedede;
+    border-radius: 2px;
+    float: left;
+    height: 30px;
+    padding: 0 0 0 6px;
+    margin-top: 6px;
+    position: relative;
+    width: 300px;
+}
+
+.input-field input[type="text"] {
+    border: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.input-field input:focus {
+    outline: none;
+}
+
+.input-label {
+    float: left;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    position: relative;
+    width: 100%;
+}
+
+.custom-field {
+    float: left;
+    position: relative;
+    width: 300px;
+}
+
+.button--pay {
+    color: #fff;
+    background-color: #0abf53;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    height: 40px;
+    padding-top: 2px;
+    margin-top: 20px;
+    width: 310px;
+}
+
+.button--pay.disabled {
+    pointer-events: none;
+    opacity: .5;
+}
+
+.brand-container__image {
+    width: 40px;
+}
+
+/* Page styling */
+.content {
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+.explanation {
+    margin: 20px auto 0;
+    position: relative;
+    width: 60%;
+}
+
+.checkout-container {
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+}
+
+.payment-div {
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+@media (max-width: 520px) {
+    .explanation {
+        width: 100%;
+    }
+
+    .form-div {
+        width: 100%;
+    }
+}

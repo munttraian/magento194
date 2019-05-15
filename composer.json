@@ -1,0 +1,19 @@
+{
+    "name": "adyen/payment",
+    "description": "Official Magento Plugin to connect to Payment Service Provider Adyen.",
+    "type": "magento-module",
+    "homepage": "https://github.com/adyenpayments/magento",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Adyen",
+            "email": "support@adyen.com"
+        }
+    ],
+    "replace": {
+        "connect20/madia_adyen": "1.*"
+    },
+    "require": {
+        "php": ">=5.6.0"
+    }
+}

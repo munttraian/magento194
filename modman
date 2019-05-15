@@ -1,0 +1,25 @@
+app/code/community/Adyen/Payment    app/code/community/Adyen/Payment
+app/code/community/Adyen/Fee        app/code/community/Adyen/Fee
+app/etc/modules/Adyen_Payment.xml   app/etc/modules/Adyen_Payment.xml
+
+app/design/frontend/base/default/template/adyen             app/design/frontend/base/default/template/adyen
+app/design/frontend/base/default/layout/adyen.xml           app/design/frontend/base/default/layout/adyen.xml
+app/design/adminhtml/default/default/template/adyen         app/design/adminhtml/default/default/template/adyen
+app/design/adminhtml/default/default/layout/adyen.xml       app/design/adminhtml/default/default/layout/adyen.xml
+app/design/adminhtml/default/default/layout/adyen_fee.xml   app/design/adminhtml/default/default/layout/adyen_fee.xml
+
+app/locale/fr_FR/Adyen_Payment.csv    app/locale/fr_FR/Adyen_Payment.csv
+app/locale/es_ES/Adyen_Payment.csv    app/locale/es_ES/Adyen_Payment.csv
+app/locale/pt_BR/Adyen_Payment.csv    app/locale/pt_BR/Adyen_Payment.csv
+app/locale/nl_NL/Adyen_Fee.csv        app/locale/nl_NL/Adyen_Fee.csv
+app/locale/nl_NL/Adyen_Payment.csv    app/locale/nl_NL/Adyen_Payment.csv
+app/locale/de_DE/Adyen_Payment.csv    app/locale/de_DE/Adyen_Payment.csv
+
+js/adyen           js/adyen
+shell/adyen.php    shell/adyen.php
+
+skin/frontend/base/default/css/adyen.css        skin/frontend/base/default/css/adyen.css
+skin/frontend/base/default/css/adyenstyle.css   skin/frontend/base/default/css/adyenstyle.css
+skin/frontend/base/default/images/adyen         skin/frontend/base/default/images/adyen
+skin/adminhtml/default/default/images/adyen     skin/adminhtml/default/default/images/adyen
+

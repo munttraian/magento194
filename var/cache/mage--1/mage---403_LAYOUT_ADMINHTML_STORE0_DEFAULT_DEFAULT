@@ -3119,6 +3119,73 @@
       <block type="currencysymbol/adminhtml_system_currencysymbol" name="mage.system.currencysymbol" template="currencysymbol/grid.phtml"/>
    </reference>
 </adminhtml_system_currencysymbol_index>
+<add_order_grid_column_handle>
+   <reference name="sales_order.grid">
+      <action method="addColumnAfter">
+         <columnId>adyen_event_code</columnId>
+         <arguments module="ordergrid" translate="header">
+            <header>Adyen Status</header>
+            <index>adyen_event_code</index>
+            <filter_index>main_table.adyen_event_code</filter_index>
+            <width>50px</width>
+            <type>options</type>
+            <filter>adyen/adminhtml_sales_order_filter_adyen</filter>
+            <renderer>adyen/adminhtml_sales_order_renderer_adyen</renderer>
+         </arguments>
+         <after>status</after>
+      </action>
+   </reference>
+</add_order_grid_column_handle>
+<adminhtml_sales_order_grid>
+   <update handle="add_order_grid_column_handle"/>
+</adminhtml_sales_order_grid>
+<adminhtml_sales_order_index>
+   <update handle="add_order_grid_column_handle"/>
+</adminhtml_sales_order_index>
+<adminhtml_adyen_event_queue_index>
+   <reference name="content">
+      <block type="adyen/adminhtml_adyen_event_queue" name="adyen.adyen_event.queue.grid.container"/>
+   </reference>
+</adminhtml_adyen_event_queue_index>
+<adminhtml_adyen_event_queue_grid>
+   <remove name="root"/>
+   <block type="adyen/adminhtml_adyen_event_queue_grid" name="adyen.adyen.adyen_event.queue.grid" output="toHtml"/>
+</adminhtml_adyen_event_queue_grid>
+<adminhtml_sales_order_create_index>
+   <reference name="head">
+      <action method="addCss">
+         <stylesheet>adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>adyencheckout.css</stylesheet>
+      </action>
+      <action method="addJs">
+         <script>adyen/payment/iban.js</script>
+      </action>
+      <action method="addJs">
+         <script>adyen/adminhtml/sales.js</script>
+      </action>
+   </reference>
+</adminhtml_sales_order_create_index>
+<default>
+   <reference name="notifications">
+      <block type="adyen/adminhtml_notifications" name="adyen_notifications" template="adyen/payment/notifications.phtml"/>
+      <block type="adyen/adminhtml_messageversion" name="adyen_messageversion" template="adyen/payment/messageversion.phtml"/>
+      <block type="adyen/adminhtml_apikeymessage" name="adyen_apikeymessage" template="adyen/payment/apikeymessage.phtml"/>
+   </reference>
+</default>
+<adminhtml_sales_order_creditmemo_new>
+   <reference name="creditmemo_totals">
+      <block type="adyen_fee/adminhtml_sales_order_creditmemo_totals" before="tax" name="adyen_totals"/>
+      <block type="adyen_fee/adminhtml_sales_order_creditmemo_create_adjustments" before="adjustments" name="adjust_adyen_fee" template="adyen/fee/creditmemo/totals/adjustments.phtml"/>
+   </reference>
+</adminhtml_sales_order_creditmemo_new>
+<adminhtml_sales_order_creditmemo_updateqty>
+   <reference name="creditmemo_totals">
+      <block type="adyen_fee/adminhtml_sales_order_creditmemo_totals" before="tax" name="adyen_totals"/>
+      <block type="adyen_fee/adminhtml_sales_order_creditmemo_create_adjustments" before="adjustments" name="adjust_adyen_fee" template="adyen/fee/creditmemo/totals/adjustments.phtml"/>
+   </reference>
+</adminhtml_sales_order_creditmemo_updateqty>
 <adminhtml_system_config_edit>
    <reference name="content">
       <block type="moneybookers/jsinit" name="moneybookers_jsinit" template="moneybookers/jsinit.phtml"/>

@@ -1,0 +1,250 @@
+<?php
+/**
+ * Adyen Payment Module
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    Adyen
+ * @package    Adyen_Payment
+ * @copyright    Copyright (c) 2011 Adyen (http://www.adyen.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @category   Payment Gateway
+ * @package    Adyen_Payment
+ * @author     Adyen
+ * @property   Adyen B.V
+ * @copyright  Copyright (c) 2014 Adyen BV (http://www.adyen.com)
+ */
+?>
+<?php
+/** @var Adyen_Payment_Block_Form_Cc $this */
+$_code = $this->getMethodCode();
+$originKey = $this->getOriginKey();
+?>
+
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+
+    <?php echo $this->getChildHtml() ?>
+
+
+    <script type="text/javascript">
+        //<![CDATA[
+
+        var alt_types = <?php echo json_encode(array_column($this->getCcAvailableTypes(), 'code_alt')); ?>;
+
+        var ajaxReq;
+
+        function getInstallments(variant) {
+            // get the installments for this cardtype
+            var ccType = variant;
+            var url = '<?php echo $this->getUrl('adyen/GetInstallments', array('_secure' => true)); ?>';
+            if (ajaxReq && ajaxReq.readystate != 4) {
+                ajaxReq.transport.abort();
+            }
+
+            ajaxReq = new Ajax.Request(url, {
+                parameters: {ccType: ccType, isAjax: 1, method: 'POST'},
+                onSuccess: function (transport) {
+
+                    if (transport.status == 200) {
+
+                        // get current selected installment
+                        var currentSelectedInstallment = document.getElementById('<?php echo $_code ?>_installments').getValue();
+
+                        // clear the select box
+                        document.getElementById('<?php echo $_code ?>_installments').options.length = 0;
+
+                        var response = transport.responseText.evalJSON();
+                        var sel = false;
+                        for (var key in response) {
+
+                            // change the installments
+                            var opt = document.createElement('option');
+                            opt.text = response[key]
+                            opt.value = key;
+                            // check if selected installment is still available
+                            if (currentSelectedInstallment == key) {
+                                sel = true;
+                            }
+                            $('<?php echo $_code ?>_installments').options.add(opt);
+                        }
+
+                        if (sel == true && currentSelectedInstallment) {
+                            document.getElementById('adyen_cc_installments').value = currentSelectedInstallment;
+                        }
+                    }
+                },
+                onFailure: function () {
+                    alert('<?php echo $this->jsQuoteEscape($this->__('Server Error. Please try again.')) ?>');
+                }
+            });
+        }
+
+
+        function renderSecureFields() {
+            var locale = "<?php echo Mage::app()->getLocale()->getLocaleCode();?>";
+            var cardGroupTypes = alt_types.slice();
+            var self = this;
+            var cardNode = document.getElementById('cardContainer');
+
+            // we can now rely on $ within the safety of our "bodyguard" function
+            var checkout = new AdyenCheckout({
+                locale: locale,
+                originKey: "<?php echo $originKey;?>",
+                loadingContext: "<?php echo Mage::helper('adyen')->getCheckoutContextUrl();?>"
+            });
+            var card = checkout.create('card', {
+                type: 'card',
+                hasHolderName: true,
+                holderNameRequired: true,
+                groupTypes: cardGroupTypes,
+
+                onChange: function (state, component) {
+                    if (state.isValid && !component.state.errors.encryptedSecurityCode) {
+                        document.getElementById('holderName').value = state.data.holderName;
+                        document.getElementById('encryptedCardNumber').value = state.data.encryptedCardNumber;
+                        document.getElementById('encryptedExpiryMonth').value = state.data.encryptedExpiryMonth;
+                        document.getElementById('encryptedExpiryYear').value = state.data.encryptedExpiryYear;
+                        if (state.data.encryptedSecurityCode) {
+                            document.getElementById('encryptedSecurityCode').value = state.data.encryptedSecurityCode;
+                        }
+                        document.getElementById("allValidcard").value = true;
+                    } else {
+                        resetFields();
+                    }
+                },
+                onBrand: function (state) {
+                    // Define the card type for installments
+                    var creditCardType = state.brand;
+                    if (creditCardType) {
+                        if (creditCardType == "BCMC") {
+                            creditCardType = "MI";
+                        }
+                        <?php if($this->hasInstallments()): ?>
+                        getInstallments(creditCardType);
+                        <?php endif; ?>
+                    }
+                }
+            });
+            card.mount(cardNode);
+        }
+        function resetFields(){
+            document.getElementById('holderName').value = "";
+            document.getElementById('encryptedCardNumber').value = "";
+            document.getElementById('encryptedExpiryMonth').value = "";
+            document.getElementById('encryptedExpiryYear').value = "";
+            document.getElementById('encryptedSecurityCode').value = "";
+            document.getElementById("allValidcard").value = "";
+        }
+        function polyFill() {
+            if (Array.prototype.filter) {
+                Array.prototype.filter = function (func, thisArg) {
+                    'use strict';
+                    if (!((typeof func === 'Function' || typeof func === 'function') && this))
+                        throw new TypeError();
+
+                    var len = this.length >>> 0,
+                        res = new Array(len), // preallocate array
+                        t = this, c = 0, i = -1;
+                    if (thisArg === undefined) {
+                        while (++i !== len) {
+                            // checks to see if the key was set
+                            if (i in this) {
+                                if (func(t[i], i, t)) {
+                                    res[c++] = t[i];
+                                }
+                            }
+                        }
+                    } else {
+                        while (++i !== len) {
+                            // checks to see if the key was set
+                            if (i in this) {
+                                if (func.call(thisArg, t[i], i, t)) {
+                                    res[c++] = t[i];
+                                }
+                            }
+                        }
+                    }
+
+                    res.length = c; // shrink down array to proper size
+                    return res;
+                };
+            }
+        }
+
+        var secf = document.createElement("script");
+        <?php $adyenHelper = Mage::helper('adyen'); ?>
+        secf.src = "<?php echo $adyenHelper->getCheckoutCardComponentJs();?>";
+        secf.type = "text/javascript";
+        secf.onload = function () {
+            polyFill();
+            renderSecureFields();
+        };
+        document.body.appendChild(secf);
+
+        //]]>
+    </script>
+    <li>
+        <div class="checkout-container" id="cardContainer">
+            <div class="form-div">
+                <input type="hidden" name="payment[cc_owner]" id="holderName"
+                       value="">
+                <input type="hidden" name="payment[encrypted_number]" id="encryptedCardNumber"
+                       value="">
+                <input type="hidden" name="payment[encrypted_expiry_month]" id="encryptedExpiryMonth"
+                       value="">
+                <input type="hidden" name="payment[encrypted_expiry_year]" id="encryptedExpiryYear"
+                       value="">
+                <input type="hidden" name="payment[encrypted_cvc]" id="encryptedSecurityCode"
+                       value="">
+                <input type="hidden" class="required-entry" name="allValidcard" id="allValidcard" value="">
+            </div>
+        </div>
+    </li>
+    <?php if ($this->hasInstallments()): ?>
+        <li class="adyen_payment_input_fields adyen_payment_input_fields_cc_installments">
+            <label for="<?php echo $_code ?>_installments"
+                   class="required"><em>*</em><?php echo $this->__('Installments') ?></label>
+            <div class="input-box">
+                <div class="v-fix">
+                    <select id="<?php echo $_code ?>_installments" name="payment[additional_data]"
+                            class="number required-entry">
+                        <?php foreach ($this->getPossibleInstallments() as $k => $v): ?>
+                            <option value="<?php echo $k ? $k : '' ?>"><?php echo $v ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+
+        </li>
+    <?php endif; ?>
+    <?php if ($this->canCreateBillingAgreement()): ?>
+        <li>
+            <div class="input-box" id="adyen-remember-details">
+                <div class="v-fix">
+                    <input type="checkbox" name="payment[store_cc]" id="<?php echo $_code ?>_store_cc"
+                           value="1"/>
+                    <label for="<?php echo $_code ?>_store_cc"><em>*</em><?php echo $this->__('Remember these details') ?>
+                    </label>
+                </div>
+            </div>
+            <script type="text/javascript">
+                // don't show save cc for guest checkout. Only possible to detect with javascript
+                if ($('login:guest') && $('login:guest').checked) {
+                    $('adyen-remember-details').hide();
+                }
+            </script>
+        </li>
+    <?php endif; ?>
+    <div class="validation-advice" id="advice-required-entry-allValidcard"
+         style="display: none;"><?php echo $this->__('Please check that all the required fields are valid.') ?></div>
+</ul>

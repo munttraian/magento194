@@ -1,0 +1,121 @@
+<?php
+/**
+ * Adyen Payment Module
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    Adyen
+ * @package    Adyen_Payment
+ * @copyright    Copyright (c) 2011 Adyen (http://www.adyen.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @category   Payment Gateway
+ * @package    Adyen_Payment
+ * @author     Adyen
+ * @property   Adyen B.V
+ * @copyright  Copyright (c) 2018 Adyen BV (http://www.adyen.com)
+ */
+?>
+<?php $_code = $this->getMethodCode() ?>
+
+<script type="text/javascript">
+
+    var terminals = document.getElementById("terminals");
+    <?php foreach ($this->retrieveConnectedTerminals() as $key => $terminal): ?>
+    terminals.options[<?php echo $key;?>] = new Option("<?php echo $terminal;?>", <?php echo $key;?>);
+    <?php endforeach;?>
+
+
+    $("initiate").on("click", function () {
+        var self = this;
+        this.disabled = true;
+        var terminalId = terminals.options[terminals.selectedIndex].text;
+        terminals.disabled = true;
+        $("pos-cloud-please-wait").show();
+        new Ajax.Request("<?php echo $this->getUrl('adyen/Pos/initiate', array('_secure' => true)); ?>", {
+            parameters: {isAjax: 1, method: 'POST', terminalId: terminalId},
+            onSuccess: function (response) {
+                if (response.responseText.indexOf("Retry") > -1) {
+                    status();
+                    return;
+                } else if (response.responseText.indexOf("Stop") > -1) {
+                    alert(response.responseJSON.error);
+                    self.disabled = false;
+                    terminals.disabled = false;
+                    $("pos-cloud-please-wait").hide();
+                    return;
+                }
+                placeOrder();
+            },
+            onFailure: function () {
+                reject(Error("Network Error"));
+            }
+        });
+    });
+
+    function status() {
+        var terminalId = terminals.options[terminals.selectedIndex].text;
+        new Ajax.Request("<?php echo $this->getUrl('adyen/Pos/checkStatus', array('_secure' => true)); ?>", {
+            parameters: {isAjax: 1, method: 'POST', terminalId: terminalId},
+            onSuccess: function (response) {
+                var self = this;
+                if (response.responseText.indexOf("Retry") > -1) {
+                    self.setTimeout(
+                        status, 5000);
+                    return;
+                } else if (response.responseText.indexOf("Stop") > -1) {
+                    alert(response.responseJSON.error);
+                    $("initiate").disabled = false;
+                    terminals.disabled = false;
+                    $("pos-cloud-please-wait").hide();
+                    return;
+                }
+                placeOrder();
+            },
+            onFailure: function () {
+                reject(Error("Network Error"));
+            }
+        });
+    };
+
+    function placeOrder() {
+        new Ajax.Request("<?php echo $this->getUrl('adyen/Pos/placeOrder', array('_secure' => true)); ?>", {
+            parameters: {isAjax: 1, method: 'POST'},
+            onSuccess: function (response) {
+                if (response.responseText.indexOf("SUCCESS") > -1) {
+                    window.location = "<?php echo $this->getUrl('checkout/onepage/success',
+                        array('_secure' => true)); ?>";
+                }
+            },
+            onFailure: function () {
+                reject(Error("Order Creation Error"));
+            }
+        });
+    };
+</script>
+
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+        <li>
+            <select id="terminals"></select>
+        </li>
+        <li>
+            <input type="button" id="initiate" value="Place Order POS"
+                   class="button btn-proceed-checkout btn-checkout adyen-checkout-button"/>
+            <span id="pos-cloud-please-wait" style="display:none;" class="opc-please-wait">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" class="v-middle" alt=""/> &nbsp; <?php echo $this->__('Please follow the instructions on your terminal...') ?>
+                &nbsp;
+            </span>
+        </li>
+    </ul>
+</fieldset>
+

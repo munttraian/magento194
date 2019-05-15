@@ -226,6 +226,11 @@
 <reference name="notifications">
    <block type="tax/adminhtml_notifications" name="tax_notifications" template="tax/notifications.phtml"/>
 </reference>
+<reference name="notifications">
+   <block type="adyen/adminhtml_notifications" name="adyen_notifications" template="adyen/payment/notifications.phtml"/>
+   <block type="adyen/adminhtml_messageversion" name="adyen_messageversion" template="adyen/payment/messageversion.phtml"/>
+   <block type="adyen/adminhtml_apikeymessage" name="adyen_apikeymessage" template="adyen/payment/apikeymessage.phtml"/>
+</reference>
 <reference name="content">
    <block type="adminhtml/notification_curl" name="notification_curl" as="notification_curl" template="notification/curl.phtml"/>
 </reference>

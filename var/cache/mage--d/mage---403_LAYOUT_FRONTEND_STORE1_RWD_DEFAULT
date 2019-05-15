@@ -5122,6 +5122,176 @@
       </action>
    </reference>
 </customer_logged_in>
+<adyen_updatecart_index>
+   <update handle="checkout_cart_index"/>
+</adyen_updatecart_index>
+<default>
+   <block type="adyen/ApplePay" name="adyen.applepay.express.checkout" template="adyen/apple_pay.phtml"/>
+</default>
+<checkout_onepage_review>
+   <reference name="checkout.onepage.review.info.items.after">
+      <block type="adyen/ApplePay" after="-" name="adyen.applepay.express.checkout" template="adyen/apple_pay.phtml">
+         <action method="setData">
+            <name>reviewStep</name>
+            <value>1</value>
+         </action>
+      </block>
+   </reference>
+</checkout_onepage_review>
+<checkout_cart_index>
+   <reference name="head">
+      <action method="addCss">
+         <stylesheet>css/adyen.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyencheckout.css</stylesheet>
+      </action>
+   </reference>
+   <reference name="checkout.cart.methods">
+      <action method="append" before="-" ifconfig="payment/adyen_apple_pay/show_outside_of_checkout">
+         <block>adyen.applepay.express.checkout</block>
+      </action>
+   </reference>
+</checkout_cart_index>
+<checkout_onepage_index>
+   <reference name="head">
+      <action method="addJs">
+         <script>adyen/payment/cc.js</script>
+      </action>
+      <action method="addJs">
+         <script>adyen/payment/iban.js</script>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyen.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyencheckout.css</stylesheet>
+      </action>
+   </reference>
+   <reference name="after_body_start">
+      <block type="core/template" name="after_body_start_script" template="adyen/after_body_start.phtml"/>
+   </reference>
+</checkout_onepage_index>
+<onestepcheckout_index_index>
+   <reference name="head">
+      <action method="addJs">
+         <script>adyen/payment/cc.js</script>
+      </action>
+      <action method="addJs">
+         <script>adyen/payment/iban.js</script>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyencheckout.css</stylesheet>
+      </action>
+   </reference>
+   <reference name="after_body_start">
+      <block type="core/template" name="after_body_start_script" template="adyen/after_body_start.phtml"/>
+   </reference>
+</onestepcheckout_index_index>
+<opc_index_index>
+   <reference name="head">
+      <action method="addJs">
+         <script>adyen/payment/cc.js</script>
+      </action>
+      <action method="addJs">
+         <script>adyen/payment/iban.js</script>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyencheckout.css</stylesheet>
+      </action>
+   </reference>
+   <reference name="after_body_start">
+      <block type="core/template" name="after_body_start_script" template="adyen/after_body_start.phtml"/>
+   </reference>
+</opc_index_index>
+<streamcheckout_index_index>
+   <reference name="head">
+      <action method="addJs">
+         <script>adyen/payment/cc.js</script>
+      </action>
+      <action method="addJs">
+         <script>adyen/payment/iban.js</script>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyencheckout.css</stylesheet>
+      </action>
+   </reference>
+   <reference name="after_body_start">
+      <block type="core/template" name="after_body_start_script" template="adyen/after_body_start.phtml"/>
+   </reference>
+</streamcheckout_index_index>
+<gomage_checkout_onepage_index>
+   <reference name="head">
+      <action method="addJs">
+         <script>adyen/payment/cc.js</script>
+      </action>
+      <action method="addJs">
+         <script>adyen/payment/iban.js</script>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyencheckout.css</stylesheet>
+      </action>
+   </reference>
+   <reference name="after_body_start">
+      <block type="core/template" name="after_body_start_script" template="adyen/after_body_start.phtml"/>
+   </reference>
+</gomage_checkout_onepage_index>
+<checkout_multishipping_billing>
+   <reference name="head">
+      <action method="addJs">
+         <script>adyen/payment/cc.js</script>
+      </action>
+      <action method="addJs">
+         <script>adyen/payment/iban.js</script>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyenstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/adyencheckout.css</stylesheet>
+      </action>
+   </reference>
+</checkout_multishipping_billing>
+<checkout_onepage_success>
+   <reference name="checkout.success">
+      <block type="adyen/checkout_success" name="adyen.checkout.success" template="adyen/checkout/success.phtml"/>
+   </reference>
+</checkout_onepage_success>
+<checkout_multishipping_success translate="label">
+   <reference name="checkout_success">
+      <block type="adyen/checkout_success" name="adyen.checkout.success" template="adyen/checkout/success.phtml"/>
+   </reference>
+</checkout_multishipping_success>
+<catalog_product_view>
+   <reference name="head">
+      <action method="addCss">
+         <stylesheet>css/adyen.css</stylesheet>
+      </action>
+   </reference>
+   <reference name="product.info.addtocart">
+      <action method="append" ifconfig="payment/adyen_apple_pay/show_outside_of_checkout">
+         <block>adyen.applepay.express.checkout</block>
+      </action>
+   </reference>
+</catalog_product_view>
 <moneybookers_processing_payment>
    <reference name="root">
       <action method="setTemplate">

@@ -435,6 +435,7 @@
 <reference name="header">
    <block type="page/template_links" name="account.links" as="accountLinks" template="persistent/header/links.phtml"/>
 </reference>
+<block type="adyen/ApplePay" name="adyen.applepay.express.checkout" template="adyen/apple_pay.phtml"/>
 <remove name="sale.reorder.sidebar"/>
 <label>One Page Checkout</label>
 <remove name="left"/>
@@ -582,6 +583,26 @@
       <type>js</type>
       <name>varien/weee.js</name>
    </action>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>adyen/payment/cc.js</script>
+   </action>
+   <action method="addJs">
+      <script>adyen/payment/iban.js</script>
+   </action>
+   <action method="addCss">
+      <stylesheet>css/adyen.css</stylesheet>
+   </action>
+   <action method="addCss">
+      <stylesheet>css/adyenstyle.css</stylesheet>
+   </action>
+   <action method="addCss">
+      <stylesheet>css/adyencheckout.css</stylesheet>
+   </action>
+</reference>
+<reference name="after_body_start">
+   <block type="core/template" name="after_body_start_script" template="adyen/after_body_start.phtml"/>
 </reference>
 <reference name="top.links">
    <action method="addLink" translate="label title" module="customer">
